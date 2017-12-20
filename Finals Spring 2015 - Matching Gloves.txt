@@ -1,0 +1,70 @@
+//Problem        : Finals Spring 2015 - Matching Gloves
+//Language       : C++
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <climits>
+#include <map>
+
+using namespace std;
+
+bool checkPalindrome(string inp)
+{
+    int i = 0, j = inp.length() - 1;
+    while(i <= j)
+    {
+        if(inp[i] != inp[j])
+            return false;
+        
+        i++;
+        j--;
+    }
+    
+    return true;
+}
+
+int main() {
+
+    map<string,int> pairs;
+    
+    int n, c = 0;
+    cin >> n;
+    
+    string inp;
+    while(n--)
+    {
+        cin >> inp;
+        if(checkPalindrome(inp))
+            continue;
+            
+        else
+        {
+            string temp = inp;
+            reverse(temp.begin(), temp.end());
+            
+            if(pairs.find(temp) != pairs.end())
+            {
+                c++;
+                pairs[temp] -= 1;
+                
+                if(pairs[temp] == 0)
+                    pairs.erase(temp);
+            }
+            
+            else
+                pairs[inp] += 1;
+        }
+    }
+    
+    if(pairs.size() > 0)
+        cout << "-1" << endl;
+    
+    else    
+        cout << c << endl;
+    return 0;
+}

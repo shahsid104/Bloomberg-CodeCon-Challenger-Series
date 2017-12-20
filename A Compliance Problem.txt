@@ -1,0 +1,45 @@
+//Problem        : A Compliance Problem
+//Language       : C++14
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+#include <iostream>
+#include <string>
+#include <stdio.h>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+
+int main() {
+    
+    string input;
+    cin >> input;
+    
+    unordered_map<char,int> sizes;
+    int flag = 0, count = 0;
+    
+    for(int i = 0; i < input.length(); i++)
+        sizes[input[i]]+=1;
+    
+    for(auto it = sizes.begin(); it != sizes.end(); it++)
+    {
+        if(it->second % 2 != 0 && count == 1) {
+            flag = 1;
+            break;
+        }
+        
+        else if(count == 0 && it->second % 2 != 0)
+            count = 1;
+    }
+    
+    if(flag == 0)
+        printf("yes");
+        
+    else
+        printf("no");
+        
+    return 0;
+}

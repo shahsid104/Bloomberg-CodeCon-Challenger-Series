@@ -1,0 +1,76 @@
+//Problem        : 2016 Qualifiers - Assistant to the District Hero
+//Language       : C++
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+/// Containers Start
+#include <iostream>
+#include <string>
+#include <set>
+#include <map>
+#include <stack>
+#include <queue>
+#include <vector>
+#include <utility>
+#include <iomanip>
+#include <sstream>
+#include <bitset>
+#include <cstdlib>
+#include <iterator>
+#include <algorithm>
+/// C Header Files
+#include <cstdio>
+#include <cctype>
+#include <cmath>
+#include <math.h>
+#include <ctime>
+#include <cstring>
+
+using namespace std;
+
+int main() {
+    vector<vector<int>> dist(50, vector<int>(50, 0));
+    vector<pair<int,int>> points;
+    int no_of_crimes = 0, a, b;
+    
+    cin >> no_of_crimes;
+    
+    int temp = no_of_crimes;
+    int max_i = -1, max_j = -1;
+    
+    while(temp--)
+    {
+        cin >> a >> b;
+        dist[a][b] = 1;
+        if(a > max_i)
+            max_i = a;
+        
+        if(b > max_j)
+            max_j = b;
+        
+        points.push_back(make_pair(a,b));
+            
+    }
+    
+    sort(points.begin(), points.end());
+    
+    vector<int> nums(points.size(), 1);
+    int max_val = 1;
+    
+    for(int i = 1; i < points.size(); i++)
+    {
+        for(int j = i - 1; j >= 0; j--)
+        {
+            if(points[j].first <= points[i].first && points[j].second <= points[i].second)
+                nums[i] = max(nums[i], nums[j] + 1);
+        }
+        
+        if(nums[i] > max_val)
+            max_val = nums[i];        
+    }
+    
+    cout << max_val << endl;
+    return 0;
+}

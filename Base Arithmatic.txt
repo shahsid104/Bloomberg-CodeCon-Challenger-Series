@@ -1,0 +1,82 @@
+//Problem        : Base Arithmetic
+//Language       : C++
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <climits>
+#include <map>
+#include <vector>
+#include <stack>
+#include <cmath>
+using namespace std;
+
+map<char, int> val;
+
+int findBase(string num1)
+{
+    int max_val = 0;
+    for(int i = 0; i < num1.length(); i++)
+    {
+        if(num1[i] >= '0' && num1[i] <= '9')
+        {
+            if(max_val < (num1[i] - '0'))
+                max_val = num1[i] - '0';
+        }
+            
+        else
+        {
+            if(max_val < val[num1[i]])
+                max_val = val[num1[i]];
+        }
+    }
+    
+    return (max_val + 1);
+}
+
+long long int convertToBase10(string num1, int num1_base)
+{
+    long long int n1 = 0, c = 0;
+    for(int i = num1.length() - 1; i >= 0; i--, c++)
+    {
+        if(num1[i] >= '0' && num1[i] <= '9')
+            n1 += (num1[i] - '0') * pow(num1_base, c);
+        
+        else
+           n1 += (val[num1[i]]) * pow(num1_base, c);
+    }
+    
+    return n1;
+}
+
+int main() {
+    
+    val['A'] = 10;
+    val['B'] = 11;
+    val['C'] = 12;
+    val['D'] = 13;
+    val['E'] = 14;
+    val['F'] = 15;
+    
+    string num1, num2;
+    long long int res;
+    
+    cin >> num1;
+    cin >> num2;
+    
+    
+    int num1_base = findBase(num1);
+    
+    int num2_base = findBase(num2);
+    
+    long long int n1 = convertToBase10(num1, num1_base);
+    
+    long long int n2 = convertToBase10(num2, num2_base);
+    
+    cout << n1 + n2 << endl;
+    return 0;
+}

@@ -1,0 +1,108 @@
+//Problem        : Which Books to Read
+//Language       : C++14
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <climits>
+#include <vector>
+#include <map>
+#include <sstream>
+using namespace std;
+
+int c = 0;
+
+void dfs(string search_name, string name, map<string, vector<string>>& links, map<string, vector<string>>& books, int deg, int curr, map<string, int>& visited)
+{
+    visited[name] = 1;
+    if(search_name != name)
+    {
+        if(books.find(name) != books.end())
+        {
+            for(int i = 0; i < books[name].size(); i++)
+            {
+                if(find(books[search_name].begin(), books[search_name].end(), books[name][i]) == books[search_name].end())
+                    c++;
+            }
+        }
+    }
+    
+    if(curr == deg)
+        return;
+        
+    for(int i = 0; i < links[name].size(); i++)
+    {
+        if(visited.find(links[name][i]) == visited.end())
+            dfs(search_name, links[name][i], links, books, deg, curr + 1, visited);
+    }
+}
+
+int main() {
+
+    string search_user;
+    map<string, vector<string>> links;
+    map<string, vector<string>> book_list;
+    map<string, int> visited;
+    
+    int deg, n, m;
+    
+    cin >> search_user;
+    cin >> deg;
+    cin >> n;
+    cin >> m;
+    
+    c = 0;
+    int temp = n;
+    while(temp--)
+    {
+        string inp, a, link1, link2;
+        getline(cin, inp);
+        if(inp.length() == 0)
+        {
+            temp++;
+            continue;
+        }
+
+        stringstream ss(inp);
+        getline(ss, a, '|');
+        link1 = a;
+        getline(ss, a, '|');
+        link2 = a;
+        
+        links[link1].push_back(link2);
+        links[link2].push_back(link1);
+        
+    }
+    
+    temp = m;
+    while(temp--)
+    {
+        string inp, a;
+        getline(cin, inp);
+        if(inp.length() == 0)
+        {
+            temp++;
+            continue;
+        }
+        stringstream ss(inp);
+        string user_name = "";
+        while(getline(ss, a, '|'))
+        {
+            if(user_name.length() == 0)
+                user_name = a;
+                
+            else
+                book_list[user_name].push_back(a);
+                
+        }
+    }
+    
+    dfs(search_user, search_user, links, book_list, deg, 0, visited);
+    
+    cout << c << endl;
+    return 0;
+}

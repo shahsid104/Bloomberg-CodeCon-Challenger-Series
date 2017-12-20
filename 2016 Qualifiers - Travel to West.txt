@@ -1,0 +1,63 @@
+//Problem        : 2016 Qualifiers - Travel to the West
+//Language       : C++14
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <climits>
+#include <unordered_map>
+
+using namespace std;
+
+int c = 0;
+
+void dfs(string airport, unordered_map<string, vector<string>>& paths, unordered_map<string, int>& visited)
+{
+    if(airport == "SFO")
+    {
+        c++;
+        return;
+    }
+    
+    if(paths.find(airport) == paths.end())
+        return;
+        
+    if(visited.find(airport) != visited.end())
+        return;
+    
+    visited[airport] = 1;
+    
+    for(int i = 0; i < paths[airport].size(); i++)
+        dfs(paths[airport][i], paths, visited);
+    
+    visited.erase(airport);
+    return;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    
+    unordered_map<string, vector<string>> paths;
+    unordered_map<string, int> visited;
+    string start, dest;
+    
+    while(n--)
+    {
+            cin >> start >> dest;
+            paths[start].push_back(dest);
+    }
+    
+    visited["JFK"] = 1;
+    
+    for(int i = 0; i < paths["JFK"].size(); i++)
+        dfs(paths["JFK"][i], paths, visited);
+    
+    cout << c;    
+    
+    return 0;
+}

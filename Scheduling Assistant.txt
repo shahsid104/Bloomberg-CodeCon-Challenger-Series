@@ -1,0 +1,63 @@
+//Problem        : Scheduling Assistant
+//Language       : C++
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <climits>
+#include <vector>
+
+
+using namespace std;
+
+int main() {
+    int dur = 0;
+    cin >> dur;
+    
+    int n, no_of_times, start, end;
+    cin >> n;
+    
+    string emp_name;
+    vector<int> times(97, 0);
+    int temp = n;
+    
+    while(temp--)
+    {
+        cin >> emp_name;
+        cin >> no_of_times;
+        while(no_of_times--)
+        {
+            cin >> start >> end;
+            for(int i = start; i < end; i++)
+                times[i] += 1;
+        }
+    }
+    
+    int flag = 0, c = 0;
+    for(int i = 0; i < 97; i++)
+    {
+        if(times[i] == 0)
+        {
+            c++;
+            if(c == dur) 
+            {
+                cout << (i - dur + 1) << endl;
+                flag = 1;
+                break;
+            }
+        }
+        
+        else
+            c = 0;
+            
+    }
+    
+    if(flag != 1)
+        cout << "-1" << endl;
+        
+    return 0;
+}

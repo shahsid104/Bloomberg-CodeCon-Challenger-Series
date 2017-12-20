@@ -1,0 +1,83 @@
+//Problem        : Messed up Rugby
+//Language       : C++
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+/// Containers Start
+#include <iostream>
+#include <string>
+#include <set>
+#include <map>
+#include <stack>
+#include <queue>
+#include <vector>
+#include <utility>
+#include <iomanip>
+#include <sstream>
+#include <bitset>
+#include <cstdlib>
+#include <iterator>
+#include <algorithm>
+/// C Header Files
+#include <cstdio>
+#include <cctype>
+#include <cmath>
+#include <math.h>
+#include <ctime>
+#include <cstring>
+using namespace std;
+
+void dfs(vector<int>& candidates, int target, vector<vector<int>>& res, vector<int>& comb, int begin)
+{
+    if(!target)
+    {
+        res.push_back(comb);
+        return;
+    }
+    
+    for(int i = begin; i < candidates.size() && target >= candidates[i]; i++)
+    {
+        if(candidates[i] == 2)
+            comb[2] += 1;
+        
+        else if(candidates[i] == 3)
+            comb[1] += 1;
+        
+        else
+            comb[0] += 1;
+        
+        dfs(candidates, target - candidates[i], res, comb, i);
+        
+        if(candidates[i] == 2)
+            comb[2] -= 1;
+        
+        else if(candidates[i] == 3)
+            comb[1] -= 1;
+        
+        else
+            comb[0] -= 1;
+        
+    }
+}
+
+int main() {
+    vector<int> candidates = {2,3,7};
+    int target;
+    
+    cin >> target;
+    
+    vector<int> comb(3);
+    vector<vector<int>> res;
+    
+    dfs(candidates, target, res, comb, 0);
+    
+    sort(res.begin(), res.end());
+    
+    for(int i = 0; i < res.size(); i++)
+    {
+        cout << res[i][0] << " " << res[i][1] << " " << res[i][2] << endl;
+    }
+    return 0;
+}
